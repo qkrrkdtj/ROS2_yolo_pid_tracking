@@ -82,3 +82,23 @@ ROS2_yolo_pid_tracking/
 - /cmd_vel 토픽에 angular.z 값으로 퍼블리시
 
 ## 트러블슈팅
+
+### rpicam-apps 빌드 오류: libavcodec API version is too old
+
+**환경:** Ubuntu 24.04 / aarch64
+
+**오류 메시지:**
+error: #error "Error: libavcodec API version is too old for the libav encoder!"
+
+**원인:**
+Ubuntu 24.04 기본 패키지의 libavcodec 버전이
+rpicam-apps 1.12.0 요구 버전보다 낮음
+
+**해결:**
+`-Denable_libav=disabled` 옵션으로 빌드
+```bash
+meson setup build \
+  -Denable_libav=disabled \
+  -Denable_drm=enabled \
+  ...
+```
