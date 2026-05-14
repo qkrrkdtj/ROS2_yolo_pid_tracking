@@ -19,6 +19,8 @@
 
 ![System Architecture](./docs/images/1.png)
 ## 시연 영상
+
+![System Architecture](./docs/images/2.png)
 https://youtu.be/_1meOx0wfD8
 
 
