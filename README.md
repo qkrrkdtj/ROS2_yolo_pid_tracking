@@ -89,7 +89,7 @@ ROS2_yolo_pid_tracking/
 
 ## 트러블슈팅
 
-### rpicam-apps 빌드 오류: libavcodec API version is too old
+### Case1) rpicam-apps 빌드 오류: libavcodec API version is too old
 
 **환경:** Ubuntu 24.04
 
