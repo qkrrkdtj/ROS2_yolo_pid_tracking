@@ -20,9 +20,11 @@
 ![System Architecture](./docs/images/1.png)
 ## 시연 영상
 
-![System Architecture](./docs/images/2.png)
-https://youtu.be/_1meOx0wfD8
+[![video](./docs/images/최종영상.gif)](https://youtu.be/_1meOx0wfD8)
+[유튜브](https://youtu.be/_1meOx0wfD8)
 
+<img src="./docs/images/가상환경에서테스트.gif">
+가상 환경에서 테스트
 
 ## 파일 구조
 
@@ -111,3 +113,68 @@ meson setup build \
   -Denable_drm=enabled \
   ...
 ```
+
+### Case2) YOLO 환경(conda)과 ROS2 환경(venv) 분리 문제
+
+**문제**  
+YOLO 추론은 `conda` 가상환경에서, ROS2는 `venv` 가상환경에서 동작하도록 구성되어 있어 두 환경을 단일 프로세스로 통합하려 했으나, 패키지 버전 충돌로 인해 불가능했다.
+
+**해결**  
+두 환경을 별도 프로세스로 분리하고, **소켓(Socket) 통신**으로 데이터를 주고받는 구조를 채택함.  
+YOLO 추론 결과(객체 중심 좌표)를 소켓으로 전송 → ROS2 노드에서 수신 후 `cmd_vel` 퍼블리시
+
+```python
+# 데이터를 JSON으로 직렬화해서 socket 전송
+data = json.dumps(error).encode('utf-8')
+sock.sendto(data, server_address)
+
+# 마지막 데이터만 읽음. 더 이상 읽을 데이터가 없을 때까지 루프
+while True:
+   try:
+      # 소켓으로 오차 받아 온 후 pid제어하기
+      data, _ = self.sock.recvfrom(4096)
+      last_data = data 
+   except BlockingIOError:
+      # 버퍼가 비었을 때 루프 탈출
+      break
+```
+
+### Case3) 한 프레임에서 여러 객체가 동시에 감지되는 문제
+
+**문제**  
+기존 코드는 프레임 내 모든 객체를 탐지하도록 구성되어 있어, 컵 외의 객체까지 함께 감지되었다.
+
+**원인**  
+`model.predict()`에 클래스 필터링 옵션이 없어 COCO 기준 전체 클래스를 추론이 되었다.
+
+**해결**  
+`classes` 파라미터로 추론 대상 클래스를 컵(class ID: 41)으로 한정하였다.
+
+
+```python
+# Before
+results = model.predict(frame, stream=true, device=0, conf=0.7)
+
+# After
+results = model.predict(frame, classes=[41], stream=true, device=0, conf=0.7)
+```
+
+---
+
+### Case4) 객체 중심점 떨림(Jitter) 문제
+
+**문제**  
+Segmentation 결과의 마스크 넓이 기준으로 산출한 중심점에 원형 마커를 표시했는데, 마커가 심하게 떨리는 현상이 발생하였다.
+
+<img src="./docs/images/지터링문제.gif" width=60%>
+
+**원인**  
+프레임마다 고속으로 Segmentation을 수행하면서 마스크 경계가 픽셀 단위로 미세하게 변동되고, 이 작은 변동이 중심 좌표의 급격한 흔들림으로 이어졌다.
+
+**해결**  
+**로우패스 필터(Low-pass Filter)** 를 적용해 이전 프레임의 좌표값과 가중 평균을 내어 중심점을 부드럽게 보정하였다.
+
+
+
+
+
