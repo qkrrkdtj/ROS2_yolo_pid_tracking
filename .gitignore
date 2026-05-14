@@ -1,0 +1,59 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.env
+venv/
+.ipynb_checkpoints/
+
+# =========================
+# YOLO / AI
+# =========================
+*.pt
+*.onnx
+*.engine
+*.torchscript
+runs/
+datasets/
+
+# =========================
+# ROS2
+# =========================
+log/
+install/
+build/
+
+# =========================
+# Dataset / Recording
+# =========================
+data/
+captures/
+recordings/
+
+# =========================
+# System
+# =========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+*.code-workspace
+
+# =========================
+# Private Config
+# =========================
+config.yaml
+*.env
