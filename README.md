@@ -80,7 +80,3 @@ ROS2_yolo_pid_tracking/
 - 객체의 중심 x좌표와 화면 중간의 차이를 오차로 계산
 - PID 알고리즘으로 회전 속도 계산
 - /cmd_vel 토픽에 angular.z 값으로 퍼블리시
-
-## 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
