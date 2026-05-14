@@ -1,8 +1,10 @@
 # ROS2_yolo_pid_tracking
 
+
 ## 프로젝트 설명
 
 이 프로젝트는 ROS2와 TurtleBot3를 활용하여 객체 추적 시스템을 구현한 미니 프로젝트입니다. TurtleBot3에서 Flask를 이용한 웹캠 스트리밍 서버를 실행하고, PC에서 해당 웹 페이지에 접속하여 YOLO를 통해 객체를 탐지합니다. 탐지된 객체의 위치를 분석하여 중간 지점과의 거리를 계산하고, PID 제어를 통해 TurtleBot3에 회전 명령을 내립니다. TurtleBot3은 bringup을 통해 /cmd_vel 토픽을 구독하여 회전 동작을 수행합니다.
+
 
 ## 주요 기능
 
@@ -12,10 +14,12 @@
 - **PID 제어**: 계산된 거리에 따라 TurtleBot3의 회전 속도를 PID 제어로 조정
 - **ROS2 통신**: /cmd_vel 토픽을 통해 TurtleBot3 제어
 
+
 ## 구성도 및 흐름
 
 ![System Architecture](./docs/images/1.png)
 ## 시연 영상
+
 
 ## 파일 구조
 
@@ -33,6 +37,7 @@ ROS2_yolo_pid_tracking/
         └── index.html            # 웹 페이지 템플릿
 ```
 
+
 ## 요구사항
 
 - ROS2 (jazzy)
@@ -42,6 +47,7 @@ ROS2_yolo_pid_tracking/
 - OpenCV
 - Ultralytics YOLO
 - Jupyter Notebook
+
 
 ## 사용 방법
 
@@ -85,7 +91,7 @@ ROS2_yolo_pid_tracking/
 
 ### rpicam-apps 빌드 오류: libavcodec API version is too old
 
-**환경:** Ubuntu 24.04 / aarch64
+**환경:** Ubuntu 24.04
 
 **오류 메시지:**
 error: #error "Error: libavcodec API version is too old for the libav encoder!"
