@@ -19,6 +19,7 @@
 
 ![System Architecture](./docs/images/1.png)
 ## 시연 영상
+https://youtu.be/_1meOx0wfD8
 
 
 ## 파일 구조
